@@ -1,12 +1,12 @@
 import React from 'react';
-import Cursos from '../pages/cursos';
+import AdminDashboard  from '../pages/AdiminDashboard';
 import Footer from '../components/Footer';
 import './App.css';
 
 function App() {
   return (
     <>
-      <Cursos />
+      <AdminDashboard />
       <Footer />
     </>
   );
