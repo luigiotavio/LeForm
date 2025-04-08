@@ -3,7 +3,7 @@ import icon1 from "../src/assets/icon1.png"
 
 function Services() {
   return (
-    <div className="">
+    <div className="w-screen bg-[#F36775]">
       <div>
         <h2 className='text-bold'>Serviços</h2>
       </div>

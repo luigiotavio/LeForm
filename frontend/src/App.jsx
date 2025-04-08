@@ -1,19 +1,17 @@
 import React from 'react';
-import Cursos from '../pages/cursos';
-import Footer from '../components/Footer';
+import Home from '../pages/home';
 import Navbar from '../components/navbar';
-import Banner from '../components/banner';
-import Service from '../components/services';
+
+import './App.css';
 
 function App() {
   return (
-    <>
-      <Navbar></Navbar>
-      <Banner></Banner>
-      <Service></Service>
-      <Footer />
-      
-    </>
+    <div className='px-10'>
+      <Home />
+
+
+
+    </div>
   );
 }
 
