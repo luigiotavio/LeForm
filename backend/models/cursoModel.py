@@ -12,3 +12,14 @@ class Curso(Base):
     especializacao = Column(String)
     link = Column(String)
     url_imagem = Column(String)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nome": self.nome,
+            "doutor":self.doutor,
+            "preco":self.preco,
+            "atividades":self.atividades,
+            "link":self.link,
+            "url_imagem":self.url_imagem
+        }

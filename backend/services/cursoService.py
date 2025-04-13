@@ -2,6 +2,15 @@ from models.cursoModel import Curso
 from db.database import SessionLocal
 
 class CursoService():
+    def update_curso(curso_id, data):
+        with SessionLocal() as db:
+            curso = db.query(Curso).get(curso_id)
+            for key, value in data.items():
+                setattr(curso, key, value)
+            db.commit()
+            db.refresh(curso) 
+            return curso.to_dict()  
+
     def get_all_cursos():
         with SessionLocal() as db:
             return db.query(Curso).all()
@@ -17,14 +26,6 @@ class CursoService():
             db.commit()
             db.refresh(novo)
             return novo
-
-    def update_curso(curso_id, data):
-        with SessionLocal() as db:
-            curso = db.query(Curso).get(curso_id)
-            for key, value in data.items():
-                setattr(curso, key, value)
-            db.commit()
-            return curso
 
     def delete_curso(curso_id):
         with SessionLocal() as db:

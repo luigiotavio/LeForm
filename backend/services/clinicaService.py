@@ -1,33 +1,34 @@
-from models.cursoModel import Curso
+from models.clinicaModel import Clinica
 from db.database import SessionLocal
 
 class ClinicaService():
-  def get_all_cursos():
+  def update_clinica(clinica_id, data):
+    with SessionLocal() as db:
+        clinica = db.query(Clinica).get(clinica_id)
+        for key, value in data.items():
+            setattr(clinica, key, value)
+        db.commit()
+        db.refresh(clinica) 
+        return clinica.to_dict()  
+    
+  def get_all_clinicas():
       with SessionLocal() as db:
-          return db.query(Curso).all()
+          return db.query(Clinica).all()
 
-  def get_curso_by_id(curso_id):
+  def get_clinica_by_id(clinica_id):
       with SessionLocal() as db:
-          return db.query(Curso).get(curso_id)
+          return db.query(Clinica).get(clinica_id)
 
-  def create_curso(data):
+  def create_clinica(data):
       with SessionLocal() as db:
-          novo = Curso(**data)
+          novo = Clinica(**data)
           db.add(novo)
           db.commit()
           db.refresh(novo)
           return novo
 
-  def update_curso(curso_id, data):
+  def delete_clinica(clinica_id):
       with SessionLocal() as db:
-          curso = db.query(Curso).get(curso_id)
-          for key, value in data.items():
-              setattr(curso, key, value)
-          db.commit()
-          return curso
-
-  def delete_curso(curso_id):
-      with SessionLocal() as db:
-          curso = db.query(Curso).get(curso_id)
-          db.delete(curso)
+          clinica = db.query(Clinica).get(clinica_id)
+          db.delete(clinica)
           db.commit()

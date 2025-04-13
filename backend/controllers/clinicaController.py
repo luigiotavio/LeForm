@@ -1,25 +1,25 @@
 from flask import request, jsonify
 from services.clinicaService import ClinicaService
 
-class ClinicaController():
+class ClinicaController():    
   def get_all():
-      clinicas = ClinicaService.get_all_cursos()
-      return jsonify([clinica.__dict__ for clinica in clinicas])
+      clinicas = ClinicaService.get_all_clinicas()
+      return jsonify([clinica.to_dict() for clinica in clinicas])
 
   def get_by_id(id):
-      clinica = ClinicaService.get_curso_by_id(id)
-      return jsonify(clinica.__dict__) if clinica else ('', 404)
+      clinica = ClinicaService.get_clinica_by_id(id)
+      return jsonify(clinica.to_dict()) if clinica else ('', 404)
 
   def create():
       data = request.json
-      novo = ClinicaService.create_curso(data)
-      return jsonify(novo.__dict__), 201
-
+      novo = ClinicaService.create_clinica(data)
+      return jsonify(novo.to_dict()), 201
+  
   def update(id):
-      data = request.json
-      atualizado = ClinicaService.update_curso(id, data)
-      return jsonify(atualizado.__dict__)
+    data = request.json
+    atualizado = ClinicaService.update_clinica(id, data)
+    return jsonify(atualizado)
 
   def delete(id):
-      ClinicaService.delete_curso(id)
-      return '', 204
+      ClinicaService.delete_clinica(id)
+      return f"Clínica {id} deletada", 204
