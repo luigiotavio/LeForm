@@ -48,3 +48,4 @@ export const mockClinics = [
       whatsappLink: "https://wa.me/5511944444444"
     }
   ];
+
