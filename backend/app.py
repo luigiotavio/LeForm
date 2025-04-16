@@ -1,9 +1,18 @@
 from flask import Flask
-from controllers.admController import admin_bp
+from routes.cursoRoutes import curso_bp
+from routes.clinicasRoutes import clinica_bp
+from db.database import Base, engine
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    Base.metadata.create_all(bind=engine)
 
-app.register_blueprint(admin_bp)
+    app.register_blueprint(curso_bp)
+    app.register_blueprint(clinica_bp)
 
-if __name__ == "__main__":
+    return app
+
+app = create_app()
+
+if __name__ == '__main__':
     app.run(debug=True)
