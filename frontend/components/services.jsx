@@ -3,9 +3,9 @@ import icon1 from "../src/assets/icon1.png"
 
 function Services() {
   return (
-    <div className="w-screen bg-[#F36775]">
+    <div className="text-white p-10 bg-[#F36775]">
       <div>
-        <h2 className='text-bold'>Serviços</h2>
+        <h1 className='font-bold'>Serviços</h1>
       </div>
 
       <div className='mt-16'>
@@ -35,10 +35,6 @@ function Services() {
           </div>
         </div>
         
-        
-
-        
-
       </div>
     </div>
   )
