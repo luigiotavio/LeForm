@@ -1,14 +1,14 @@
 import React from 'react';
-import AdminLogin  from '../pages/AdiminLogin';
+import Cursos  from '../pages/cursos';
+import AdiminDashboard  from '../pages/AdiminDashboard';
 import Footer from '../components/Footer';
 import './App.css';
-import Clinicas from '../pages/Clinicas';
 
 function App() {
   return (
     <>
 
-      <Clinicas />
+      <AdiminDashboard />
       <Footer />
     </>
   );

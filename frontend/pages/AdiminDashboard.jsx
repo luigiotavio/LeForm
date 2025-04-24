@@ -1,17 +1,254 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Edit2, Trash2, Move, Save, X, ChevronDown } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, Move } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { mockCourses } from '../data/mockCourses';
-import { mockClinics } from '../data/mockClinics';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('cursos');
   const [searchTerm, setSearchTerm] = useState('');
-  const [courses, setCourses] = useState(mockCourses);
-  const [clinics, setClinics] = useState(mockClinics);
+  const [courses, setCourses] = useState([]);
+  const [clinics, setClinics] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Buscar dados de cursos e clínicas
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        // Buscar cursos
+        const coursesResponse = await fetch('/cursos');
+        if (!coursesResponse.ok) throw new Error('Erro ao buscar cursos');
+        const coursesData = await coursesResponse.json();
+        
+        // Mapear cursos
+        const mappedCourses = coursesData.map(course => ({
+          id: course.id,
+          title: course.nome,
+          doctor: course.doutor,
+          price: course.preco ? course.preco.toString() : '0',
+          lessons: parseInt(course.atividades) || 0,
+          specialization: course.especializacao,
+          link: course.link,
+          imageUrl: course.url_imagem
+        }));
+        setCourses(mappedCourses);
+        
+        // Buscar clínicas
+        const clinicsResponse = await fetch('/clinicas');
+        if (!clinicsResponse.ok) throw new Error('Erro ao buscar clínicas');
+        const clinicsData = await clinicsResponse.json();
+        
+        // Mapear clínicas
+        const mappedClinics = clinicsData.map(clinic => ({
+          id: clinic.id,
+          name: clinic.nome,
+          specialty: clinic.especialidade,
+          address: clinic.endereco,
+          imageUrl: clinic.url_imagem,
+          whatsappLink: clinic.link_whatsapp
+        }));
+        setClinics(mappedClinics);
+        
+      } catch (err) {
+        console.error('Erro:', err);
+        setError('Erro ao carregar dados. Por favor, tente novamente.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
+
+  // CRUD para cursos
+  const handleSaveCourse = async () => {
+    try {
+      const backendFormat = {
+        nome: currentItem.title,
+        doutor: currentItem.doctor,
+        preco: parseFloat(currentItem.price.replace(',', '.')),
+        atividades: currentItem.lessons.toString(),
+        especializacao: currentItem.specialization,
+        link: currentItem.link,
+        url_imagem: currentItem.imageUrl || ''
+      };
+      
+      let response;
+      
+      if (currentItem.id) {
+        // Atualizar existente
+        response = await fetch(`/cursos/${currentItem.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(backendFormat)
+        });
+      } else {
+        // Criar novo
+        response = await fetch('/cursos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(backendFormat)
+        });
+      }
+      
+      if (!response.ok) throw new Error('Erro ao salvar curso');
+      
+      // Recarregar cursos após salvar
+      const coursesResponse = await fetch('/cursos');
+      const coursesData = await coursesResponse.json();
+      const mappedCourses = coursesData.map(course => ({
+        id: course.id,
+        title: course.nome,
+        doctor: course.doutor,
+        price: course.preco ? course.preco.toString() : '0',
+        lessons: parseInt(course.atividades) || 0,
+        specialization: course.especializacao,
+        link: course.link,
+        imageUrl: course.url_imagem
+      }));
+      setCourses(mappedCourses);
+      
+      setIsEditing(false);
+      setCurrentItem(null);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Erro ao salvar curso:', error);
+      alert('Erro ao salvar curso. Tente novamente.');
+    }
+  };
+
+  const handleDeleteCourse = async (id) => {
+    try {
+      const response = await fetch(`/cursos/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) throw new Error('Erro ao deletar curso');
+      
+      setCourses(courses.filter(course => course.id !== id));
+    } catch (error) {
+      console.error('Erro ao deletar curso:', error);
+      alert('Erro ao deletar curso. Tente novamente.');
+    }
+  };
+
+  // CRUD para clínicas
+  const handleSaveClinic = async () => {
+    try {
+      const backendFormat = {
+        nome: currentItem.name,
+        especialidade: currentItem.specialty,
+        endereco: currentItem.address,
+        url_imagem: currentItem.imageUrl,
+        link_whatsapp: currentItem.whatsappLink
+      };
+      
+      let response;
+      
+      if (currentItem.id) {
+        // Atualizar existente
+        response = await fetch(`/clinicas/${currentItem.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(backendFormat)
+        });
+      } else {
+        // Criar novo
+        response = await fetch('/clinicas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(backendFormat)
+        });
+      }
+      
+      if (!response.ok) throw new Error('Erro ao salvar clínica');
+      
+      // Recarregar clínicas após salvar
+      const clinicsResponse = await fetch('/clinicas');
+      const clinicsData = await clinicsResponse.json();
+      const mappedClinics = clinicsData.map(clinic => ({
+        id: clinic.id,
+        name: clinic.nome,
+        specialty: clinic.especialidade,
+        address: clinic.endereco,
+        imageUrl: clinic.url_imagem,
+        whatsappLink: clinic.link_whatsapp
+      }));
+      setClinics(mappedClinics);
+      
+      setIsEditing(false);
+      setCurrentItem(null);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Erro ao salvar clínica:', error);
+      alert('Erro ao salvar clínica. Tente novamente.');
+    }
+  };
+
+  const handleDeleteClinic = async (id) => {
+    try {
+      const response = await fetch(`/clinicas/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) throw new Error('Erro ao deletar clínica');
+      
+      setClinics(clinics.filter(clinic => clinic.id !== id));
+    } catch (error) {
+      console.error('Erro ao deletar clínica:', error);
+      alert('Erro ao deletar clínica. Tente novamente.');
+    }
+  };
+
+  // Funções generalizadas para operações CRUD
+  const handleEdit = (item) => {
+    setCurrentItem(item);
+    setIsEditing(true);
+  };
+
+  const handleDelete = (id) => {
+    if (activeTab === 'cursos') {
+      handleDeleteCourse(id);
+    } else {
+      handleDeleteClinic(id);
+    }
+  };
+
+  const handleSave = () => {
+    if (activeTab === 'cursos') {
+      handleSaveCourse();
+    } else {
+      handleSaveClinic();
+    }
+  };
+
+  const handleAddNew = () => {
+    if (activeTab === 'cursos') {
+      setCurrentItem({
+        title: '',
+        doctor: '',
+        price: '0',
+        lessons: 0,
+        specialization: '',
+        link: '',
+        imageUrl: ''
+      });
+    } else {
+      setCurrentItem({
+        name: '',
+        specialty: '',
+        address: '',
+        imageUrl: '',
+        whatsappLink: '',
+      });
+    }
+    setShowAddModal(true);
+  };
 
   // Função para filtrar itens
   const getFilteredItems = () => {
@@ -41,70 +278,6 @@ const AdminDashboard = () => {
     } else {
       setClinics(items);
     }
-  };
-
-  // Funções de manipulação (CRUD)
-  const handleEdit = (item) => {
-    setCurrentItem(item);
-    setIsEditing(true);
-  };
-
-  const handleDelete = (id) => {
-    if (activeTab === 'cursos') {
-      setCourses(courses.filter(course => course.id !== id));
-    } else {
-      setClinics(clinics.filter(clinic => clinic.id !== id));
-    }
-  };
-
-  const handleSave = () => {
-    if (!currentItem) return;
-    
-    if (activeTab === 'cursos') {
-      if (currentItem.id) {
-        // Editar existente
-        setCourses(courses.map(course => course.id === currentItem.id ? currentItem : course));
-      } else {
-        // Adicionar novo
-        const newId = Math.max(...courses.map(c => c.id), 0) + 1;
-        setCourses([...courses, { ...currentItem, id: newId }]);
-      }
-    } else {
-      if (currentItem.id) {
-        // Editar existente
-        setClinics(clinics.map(clinic => clinic.id === currentItem.id ? currentItem : clinic));
-      } else {
-        // Adicionar novo
-        const newId = Math.max(...clinics.map(c => c.id), 0) + 1;
-        setClinics([...clinics, { ...currentItem, id: newId }]);
-      }
-    }
-    
-    setIsEditing(false);
-    setCurrentItem(null);
-    setShowAddModal(false);
-  };
-
-  const handleAddNew = () => {
-    if (activeTab === 'cursos') {
-      setCurrentItem({
-        title: '',
-        doctor: '',
-        price: '',
-        lessons: 0,
-        specialization: '',
-        link: '',
-      });
-    } else {
-      setCurrentItem({
-        name: '',
-        specialty: '',
-        address: '',
-        imageUrl: '',
-        whatsappLink: '',
-      });
-    }
-    setShowAddModal(true);
   };
 
   // Renderizar formulário do curso
@@ -176,6 +349,16 @@ const AdminDashboard = () => {
             className="w-full p-2 border border-gray-300 rounded-lg"
             value={currentItem.link || ''}
             onChange={(e) => setCurrentItem({...currentItem, link: e.target.value})}
+          />
+        </div>
+        
+        <div>
+          <label className="block text-gray-700 mb-1">URL da Imagem</label>
+          <input 
+            type="text" 
+            className="w-full p-2 border border-gray-300 rounded-lg"
+            value={currentItem.imageUrl || ''}
+            onChange={(e) => setCurrentItem({...currentItem, imageUrl: e.target.value})}
           />
         </div>
         
@@ -335,77 +518,88 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Lista de itens */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="items">
-              {(provided) => (
-                <div 
-                  className="divide-y divide-gray-200" 
-                  {...provided.droppableProps} 
-                  ref={provided.innerRef}
-                >
-                  {getFilteredItems().length > 0 ? (
-                    getFilteredItems().map((item, index) => (
-                      <Draggable 
-                        key={item.id} 
-                        draggableId={item.id.toString()} 
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            className="p-4 hover:bg-gray-50 flex items-center justify-between"
-                          >
-                            <div className="flex items-center gap-4">
-                              <div {...provided.dragHandleProps} className="cursor-move text-gray-400">
-                                <Move size={20} />
+        {/* Estados de loading e erro */}
+        {loading ? (
+          <div className="text-center py-10">
+            <p className="text-gray-500">Carregando dados...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-10">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : (
+          /* Lista de itens */
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="items">
+                {(provided) => (
+                  <div 
+                    className="divide-y divide-gray-200" 
+                    {...provided.droppableProps} 
+                    ref={provided.innerRef}
+                  >
+                    {getFilteredItems().length > 0 ? (
+                      getFilteredItems().map((item, index) => (
+                        <Draggable 
+                          key={item.id} 
+                          draggableId={item.id.toString()} 
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              className="p-4 hover:bg-gray-50 flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div {...provided.dragHandleProps} className="cursor-move text-gray-400">
+                                  <Move size={20} />
+                                </div>
+                                
+                                {activeTab === 'cursos' ? (
+                                  <div>
+                                    <p className="font-medium text-[#1A1A1A]">{item.title}</p>
+                                    <p className="text-sm text-gray-500">{item.doctor} • R$ {item.price} • {item.lessons} aulas</p>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <p className="font-medium text-[#1A1A1A]">{item.name}</p>
+                                    <p className="text-sm text-gray-500">{item.specialty}</p>
+                                    <p className="text-sm text-gray-400">{item.address}</p>
+                                  </div>
+                                )}
                               </div>
                               
-                              {activeTab === 'cursos' ? (
-                                <div>
-                                  <p className="font-medium text-[#1A1A1A]">{item.title}</p>
-                                  <p className="text-sm text-gray-500">{item.doctor} • R$ {item.price} • {item.lessons} aulas</p>
-                                </div>
-                              ) : (
-                                <div>
-                                  <p className="font-medium text-[#1A1A1A]">{item.name}</p>
-                                  <p className="text-sm text-gray-500">{item.specialty}</p>
-                                  <p className="text-sm text-gray-400">{item.address}</p>
-                                </div>
-                              )}
+                              <div className="flex items-center gap-3">
+                                <button 
+                                  onClick={() => handleEdit(item)}
+                                  className="p-2 text-gray-500 hover:text-[#FF879B] transition-colors"
+                                >
+                                  <Edit2 size={18} />
+                                </button>
+                                <button 
+                                  onClick={() => handleDelete(item.id)}
+                                  className="p-2 text-gray-500 hover:text-red-500 transition-colors"
+                                >
+                                  <Trash2 size={18} />
+                                </button>
+                              </div>
                             </div>
-                            
-                            <div className="flex items-center gap-3">
-                              <button 
-                                onClick={() => handleEdit(item)}
-                                className="p-2 text-gray-500 hover:text-[#FF879B] transition-colors"
-                              >
-                                <Edit2 size={18} />
-                              </button>
-                              <button 
-                                onClick={() => handleDelete(item.id)}
-                                className="p-2 text-gray-500 hover:text-red-500 transition-colors"
-                              >
-                                <Trash2 size={18} />
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))
-                  ) : (
-                    <div className="p-8 text-center text-gray-500">
-                      Nenhum item encontrado
-                    </div>
-                  )}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
+                          )}
+                        </Draggable>
+                      ))
+                    ) : (
+                      <div className="p-8 text-center text-gray-500">
+                        Nenhum item encontrado
+                      </div>
+                    )}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </div>
+        )}
       </div>
 
       {/* Modal de edição */}
