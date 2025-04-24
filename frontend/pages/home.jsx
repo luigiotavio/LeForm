@@ -10,7 +10,9 @@ function Home() {
       <div className='px-10'>
         <Banner />
       </div>
-      <Service />
+      <div className='-mt-10 sm:-mt-14 md:-mt-20 lg:-mt-24 xl:-mt-28'>
+        <Service />
+      </div>
       <Footer />
     </div>
   );

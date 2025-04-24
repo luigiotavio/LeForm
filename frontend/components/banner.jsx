@@ -33,7 +33,7 @@ function Banner() {
       </button>
     </div>
   </div>
-  <div className="sm:w-1/2 flex justify-end mt-8 sm:mt-0">
+  <div className="sm:w-1/2 flex justify-end mt-8 sm:mt-0 relative top-12">
     <img
       src={mulher}
       className="w-full max-w-md sm:max-w-lg object-contain"
