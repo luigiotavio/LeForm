@@ -5,7 +5,7 @@ import card from "../src/assets/card.png"
 
 function Services() {
   return (
-    <div className="text-white py-10 pl-10 bg-[#F36775]">
+    <div className="text-white py-10 pl-12 bg-[#F36775]">
       <div>
         <h1 className='font-bold'>Serviços</h1>
       </div>
@@ -37,9 +37,9 @@ function Services() {
         </div>
 
         
-        <div className="sm:w-1/2 flex justify-end mt-8 sm:mt-0 relative top-12">
+        {/* <div className="sm:w-1/2 flex justify-end mt-8 sm:mt-0 relative top-12">
           <img src={card} alt="Card de serviços" className="w-full max-w-md sm:max-w-lg object-contain" />
-        </div>
+        </div> */}
         
       </div>
     </div>

@@ -1,16 +1,13 @@
-import React from 'react';
-import Home from '../pages/home';
-import Navbar from '../components/navbar';
+import React from "react";
+import Home from "../pages/home";
+import Navbar from "../components/navbar";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
-    <div className=''>
+    <div className="">
       <Home />
-
-
-
     </div>
   );
 }

@@ -2,16 +2,25 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Banner from '../components/Banner';
 import Service from '../components/Services';
+import Publicoalvo from '../components/publicoAlvo';
 import Navbar from '../components/navbar';
+import Quemsomos from '../components/quemsomos';
 
 function Home() {
   return (
     <div>
-      <div className='px-10'>
+      <Navbar></Navbar>
+      <div className='pl-10'>
         <Banner />
       </div>
-      <div className='-mt-10 sm:-mt-14 md:-mt-20 lg:-mt-24 xl:-mt-28'>
+      <div className='!mt-30 sm:mt-10'>
         <Service />
+      </div>
+      <div className=''>
+        <Publicoalvo></Publicoalvo>
+      </div>
+      <div>
+        <Quemsomos />
       </div>
       <Footer />
     </div>

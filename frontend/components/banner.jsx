@@ -1,20 +1,17 @@
 import { useState } from 'react'
 import logo from "../src/assets/logo.png"
-import mulher from "../src/assets/mulher.png"
+import mulher from "../src/assets/mulher2.png"
 
 function Banner() {
   return (
-<div className="flex flex-col sm:flex-row items-center w-full">
-  <div className="flex flex-col items-start sm:w-1/2">
+<div className="flex flex-col sm:flex-row w-full">
+  <div className="items-start sm:w-1/2 mt-10">
     <div>
       <img src={logo} alt="Logo" />
     </div>
-    <div className="max-w-lg">
-      <h1>
-        <p>
-          Excelência, segurança e resultados naturais em{" "}
-          <span className="font-bold text-[#FD919C]">cirurgia plástica.</span>
-        </p>
+    <div className="max-w-lg mt-10">
+      <h1 className="!text-4xl sm:text-3xl lg:text-2xl font-light">
+        Excelência, segurança e resultados naturais em <span className="font-bold text-[#FD919C]">cirurgia plástica.</span>
       </h1>
     </div>
     <div className="py-8 max-w-md text-xl">
@@ -33,10 +30,10 @@ function Banner() {
       </button>
     </div>
   </div>
-  <div className="sm:w-1/2 flex justify-end mt-8 sm:mt-0 relative top-12">
+  <div className="sm:w-1/2 flex justify-end mt-8 sm:mt-0 relative">
     <img
       src={mulher}
-      className="w-full max-w-md sm:max-w-lg object-contain"
+      className="w-full max-w-md sm:max-w-lg object-contain absolute right-0 top-0 z-10"
       alt="Mulher"
     />
   </div>

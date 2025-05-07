@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import { FiMenu } from 'react-icons/fi';
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white flex items-center justify-between py-10 z-50">
-      {/* Menu Centralizado - Somente em telas médias/grandes */}
+    <nav className="top-0 left-0 w-full bg-white flex items-center justify-between py-10 z-50">
       <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded-full px-4 py-2 shadow-md">
         <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base">Home</a>
         <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110">Serviços</a>
@@ -15,8 +15,6 @@ function Navbar() {
         <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base whitespace-nowrap">Para empresas</a>
       </div>
 
-
-      {/* Botão do menu Mobile */}
       <button 
         className="md:hidden text-pink-400 text-2xl" 
         onClick={() => setMenuOpen(!menuOpen)}
