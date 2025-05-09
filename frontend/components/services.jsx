@@ -5,9 +5,9 @@ import card from "../src/assets/card.png"
 
 function Services() {
   return (
-    <div className="text-white py-10 pl-12 bg-[#F36775]">
+    <div className="pr-10 md:pr-0 pt-100 text-white md:py-10 pl-12 bg-[#F36775]">
       <div>
-        <h1 className='font-bold'>Serviços</h1>
+        <h1 className='text-xl md:text-2xl font-bold'>Serviços</h1>
       </div>
 
       <div className='mt-16'>
@@ -15,24 +15,24 @@ function Services() {
         <div className='flex items-start'>
           <img src={icon1} alt="Icone" className='mr-4 mt-4' />
           <div>
-            <h2 className=' font-bolt mb-2'>Cirurgia Plástica Facial</h2>
-            <p className='mb-16'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
+            <h2 className='font-bolt mb-2 text-xl'>Cirurgia Plástica Facial</h2>
+            <p className='mb-16 text-lg'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
             <div className='border-b-2 border-gray-400 mb-12'></div>
           </div>
         </div>
         <div className='flex items-start'>
           <img src={icon1} alt="Icone" className='mr-4 mt-4' />
           <div>
-            <h2 className='mb-2'>Cirurgia Plástica Facial</h2>
-            <p className='mb-16'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
+            <h2 className='mb-2 text-xl'>Cirurgia Plástica Facial</h2>
+            <p className='mb-16 text-lg'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
             <div className='border-b-2 border-gray-400 mb-12'></div>
           </div>
         </div>
         <div className='flex items-start'>
           <img src={icon1} alt="Icone" className='mr-4 mt-4' />
           <div>
-            <h2 className='mb-2'>Cirurgia Plástica Facial</h2>
-            <p className='mb-16'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
+            <h2 className='mb-2 text-xl'>Cirurgia Plástica Facial</h2>
+            <p className='mb-16 text-lg'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
           </div>
         </div>
 

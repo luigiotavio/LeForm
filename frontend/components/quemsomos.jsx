@@ -26,13 +26,13 @@ function AccordionItem({ title, content }) {
 function Quemsomos() {
   return (
     <div className='p-10'>
-      <div className='flex gap-10'>
-        <div className='w-1/2 flex justify-center items-center'>
+      <div className='flex flex-col md:flex-row gap-10'>
+        <div className='md:w-1/2 flex justify-center items-center'>
           <img src={imagem}  alt="Avatar" className="w-full max-w-[500px] object-contain" />
         </div>
-        <div className='w-1/2'>
+        <div className='md:w-1/2'>
           <h1 className='font-bold'>Quem somos</h1>
-          <hr class="border-gray-800 w-80 mt-4 mb-4"/>
+          {/* <hr class="border-gray-800 w-80 mt-4 mb-4"/> */}
           <p className=''>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus, velit sit amet tempus auctor, dolor augue aliquet ipsum, at maximus neque justo a nisl. Nunc vel tellus luctus, venenatis massa in, pulvinar turpis.<br></br><br></br>Aliquam neque justo, egestas nec dolor ac, semper aliquam ante. Aliquam erat volutpat. Donec lacus arcu, mattis ac lectus sed, egestas rhoncus mauris. Nunc efficitur risus id mi luctus, sit amet blandit magna tincidunt.
           </p>
 

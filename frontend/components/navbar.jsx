@@ -5,7 +5,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="top-0 left-0 w-full bg-white flex items-center justify-between py-10 z-50">
+    <nav className="top-0 w-full bg-white flex items-center justify-between py-10 z-50">
       <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded-full px-4 py-2 shadow-md">
         <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base">Home</a>
         <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110">Serviços</a>
@@ -24,7 +24,7 @@ function Navbar() {
 
       {/* Menu Dropdown Mobile */}
       {menuOpen && (
-        <div className="absolute top-16 right-6 bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
+        <div className="absolute top-16 left-0 bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
           <a href="#" className="px-4 py-2 text-pink-500 font-semibold bg-pink-100 rounded-lg w-full text-center">Home</a>
           <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Serviços</a>
           <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Público</a>

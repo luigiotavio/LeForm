@@ -9,11 +9,13 @@ import Quemsomos from '../components/quemsomos';
 function Home() {
   return (
     <div>
-      <Navbar></Navbar>
+      <div className='pl-10'>
+        <Navbar></Navbar>
+      </div>
       <div className='pl-10'>
         <Banner />
       </div>
-      <div className='!mt-30 sm:mt-10'>
+      <div className='mt-80 sm:mt-30'>
         <Service />
       </div>
       <div className=''>
