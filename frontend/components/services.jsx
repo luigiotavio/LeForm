@@ -16,7 +16,7 @@ function Services() {
           <img src={icon1} alt="Icone" className='mr-4 mt-4' />
           <div>
             <h2 className='font-bolt mb-2 text-xl'>Cirurgia Plástica Facial</h2>
-            <p className='mb-16 text-lg'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
+            <p className='mb-16 text-lg md:pr-0'>Harmonização e rejuvenescimento para realçar sua beleza natural.</p>
             <div className='border-b-2 border-gray-400 mb-12'></div>
           </div>
         </div>

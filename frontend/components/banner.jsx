@@ -6,14 +6,14 @@ function Banner() {
   return (
 <div className="flex flex-col sm:flex-row w-full">
   
-  <div className="items-start sm:w-1/2 mt-10">
+  <div className="items-start sm:w-1/2 md:mt-10">
 
     <div>
       <img src={logo} alt="Logo" />
     </div>
 
     <div className="max-w-lg mt-10">
-      <h1 className="!text-2xl sm:text-3xl lg:text-4xl font-light">
+      <h1 className="!text-2xl sm:text-3xl lg:text-4xl font-light pr-10">
         Excelência, segurança e resultados naturais em <span className="font-bold text-[#FD919C]">cirurgia plástica.</span>
       </h1>
     </div>
@@ -24,7 +24,7 @@ function Banner() {
         profissionais que desejam se especializar.
       </p>
     </div>
-    <div className="flex flex-col items-start sm:flex-row gap-4">
+    <div className="flex flex-col items-start md:flex-row gap-4">
       <button className="!bg-[#FD919C] text-white px-10 py-2 rounded">
         Quero ser parceiro
       </button>
@@ -41,8 +41,6 @@ function Banner() {
     />
   </div>
 </div>
-
-    
 
   )
 }
