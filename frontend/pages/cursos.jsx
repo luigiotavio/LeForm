@@ -3,20 +3,54 @@ import CursoCard from '../components/CursoCard';
 import Filtros from '../components/Filtros';
 import Hero from '../components/Hero';
 import { Search, Filter } from 'lucide-react';
-import { mockCourses } from '../data/mockCourses';
 
 const Cursos = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [filteredCourses, setFilteredCourses] = useState(mockCourses);
+  const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     specialization: [],
     priceRange: ''
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Buscar cursos do backend
+  useEffect(() => {
+    setLoading(true);
+    fetch('/cursos')
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao buscar cursos');
+        return res.json();
+      })
+      .then(data => {
+        // Mapeando campos do backend para o frontend
+        const mappedCourses = data.map(course => ({
+          id: course.id,
+          title: course.nome,
+          doctor: course.doutor,
+          price: course.preco ? course.preco.toString().replace('.', ',') : '0',
+          lessons: parseInt(course.atividades) || 0,
+          specialization: course.especializacao,
+          link: course.link,
+          imageUrl: course.url_imagem 
+        }));
+        
+        setCourses(mappedCourses);
+        setFilteredCourses(mappedCourses);
+        setError(null);
+      })
+      .catch(err => {
+        console.error('Erro ao buscar cursos:', err);
+        setError('Erro ao carregar cursos. Por favor, tente novamente.');
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   // Função para filtrar cursos com base nos filtros selecionados
   useEffect(() => {
-    let result = [...mockCourses];
+    let result = [...courses];
     
     // Filtrar por termo de pesquisa
     if (searchTerm) {
@@ -37,13 +71,14 @@ const Cursos = () => {
     if (selectedFilters.priceRange) {
       const [min, max] = selectedFilters.priceRange.split('-').map(Number);
       result = result.filter(course => {
+        // Converter preço para número, considerando formato brasileiro (vírgula)
         const coursePrice = parseFloat(course.price.replace(',', '.'));
         return coursePrice >= min && coursePrice <= max;
       });
     }
     
     setFilteredCourses(result);
-  }, [searchTerm, selectedFilters]);
+  }, [searchTerm, selectedFilters, courses]);
 
   // Função para limpar filtros
   const clearFilters = () => {
@@ -110,22 +145,34 @@ const Cursos = () => {
               )}
             </div>
             
-            {/* Grid de Cursos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCourses.map((curso) => (
-                <CursoCard 
-                  key={curso.id} 
-                  {...curso} 
-                  link={curso.link} // Passa o link específico do curso
-                />
-              ))}
-            </div>
-
-            {/* Mensagem Caso Não Haja Resultados */}
-            {filteredCourses.length === 0 && (
+            {/* Estados de loading e erro */}
+            {loading ? (
               <div className="text-center py-10">
-                <p className="text-gray-500">Nenhum curso encontrado com os filtros selecionados.</p>
+                <p className="text-gray-500">Carregando cursos...</p>
               </div>
+            ) : error ? (
+              <div className="text-center py-10">
+                <p className="text-red-500">{error}</p>
+              </div>
+            ) : (
+              <>
+                {/* Grid de Cursos */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredCourses.map((curso) => (
+                    <CursoCard 
+                      key={curso.id} 
+                      {...curso}
+                    />
+                  ))}
+                </div>
+
+                {/* Mensagem Caso Não Haja Resultados */}
+                {filteredCourses.length === 0 && (
+                  <div className="text-center py-10">
+                    <p className="text-gray-500">Nenhum curso encontrado com os filtros selecionados.</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
