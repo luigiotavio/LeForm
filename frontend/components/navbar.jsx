@@ -8,11 +8,11 @@ function Navbar() {
     <nav className="top-0 w-full bg-white flex items-center justify-between py-10 z-50">
       <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded-full px-4 py-2 shadow-md">
         <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base">Home</a>
-        <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110">Serviços</a>
-        <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110">Público</a>
-        <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 whitespace-nowrap">Quem somos</a>
-        <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base whitespace-nowrap">Clínicas</a>
-        <a href="#" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base whitespace-nowrap">Para empresas</a>
+        <a href="#serviços" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110">Serviços</a>
+        <a href="#publico" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110">Público</a>
+        <a href="#quemsomos" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 whitespace-nowrap">Quem somos</a>
+        <a href="#clinicas" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base whitespace-nowrap">Clínicas</a>
+        <a href="#paraempresas" className="px-6 py-1 !text-black font-semibold rounded-full transition-all duration-300 hover:bg-[#FD919C] hover:!text-white hover:scale-110 text-xs md:text-sm lg:text-base whitespace-nowrap">Para empresas</a>
       </div>
 
       <button 

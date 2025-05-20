@@ -5,7 +5,7 @@ import card from "../src/assets/card.png"
 
 function Services() {
   return (
-    <div className="pr-10 md:pr-0 pt-100 text-white md:py-10 pl-12 bg-[#F36775]">
+    <div id="serviços" className="pr-10 md:pr-0 pt-100 text-white md:py-10 pl-12 bg-[#F36775]">
       <div>
         <h1 className='text-xl md:text-2xl font-bold'>Serviços</h1>
       </div>

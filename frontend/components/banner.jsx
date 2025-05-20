@@ -4,7 +4,7 @@ import mulher from "../src/assets/mulher2.png"
 
 function Banner() {
   return (
-<div className="flex flex-col sm:flex-row w-full">
+<div id="home" className="flex flex-col sm:flex-row w-full">
   
   <div className="items-start sm:w-1/2 md:mt-10">
 

@@ -3,7 +3,7 @@ import avatar1 from "../src/assets/avatar1.png"
 
 function Publicoalvo() {
   return (
-    <div className='bg-[#EF927F] px-10 py-14'>
+    <div id="publico" className='bg-[#EF927F] px-10 py-14'>
       <div class="flex flex-col md:flex-row gap-10 bg-white rounded-xl shadow-md p-6 w-full max-w-5xl mx-auto border border-transparent">
         <div class="md:w-1/2 space-y-4 flex flex-col justify-end">
           <h2 class="text-lg font-semibold text-red-500">Público-alvo</h2>
