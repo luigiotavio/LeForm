@@ -22,15 +22,14 @@ function Navbar() {
         <FiMenu />
       </button>
 
-      {/* Menu Dropdown Mobile */}
       {menuOpen && (
         <div className="absolute top-16 left-0 bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
-          <a href="#" className="px-4 py-2 text-pink-500 font-semibold bg-pink-100 rounded-lg w-full text-center">Home</a>
-          <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Serviços</a>
-          <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Público</a>
-          <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Quem somos</a>
-          <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Clínicas</a>
-          <a href="#" className="px-4 py-2 text-gray-600 hover:text-pink-500">Para empresas</a>
+          <a href="#" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-pink-500 font-semibold bg-pink-100 rounded-lg w-full text-center">Home</a>
+          <a href="#serviços" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Serviços</a>
+          <a href="#publico" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Público</a>
+          <a href="#quemsomos" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Quem somos</a>
+          <a href="#clinicas" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Clínicas</a>
+          <a href="#paraempresas" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Para empresas</a>
         </div>
       )}
     </nav>
