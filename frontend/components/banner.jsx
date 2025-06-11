@@ -4,7 +4,7 @@ import mulher from "../src/assets/mulher2.png"
 
 function Banner() {
   return (
-<div className="flex flex-col sm:flex-row w-full">
+<div id="home" className="flex flex-col sm:flex-row w-full">
   
   <div className="items-start sm:w-1/2 md:mt-10">
 
@@ -25,10 +25,10 @@ function Banner() {
       </p>
     </div>
     <div className="flex flex-col items-start md:flex-row gap-4">
-      <button className="!bg-[#FD919C] text-white px-10 py-2 rounded">
+      <button className="!bg-[#FD919C] text-white px-11 py-2 rounded hover:scale-105 transition-transform">
         Quero ser parceiro
       </button>
-      <button className="!bg-transparent !border-[#FD919C] border-2 text-[#FD919C] px-10 py-2 rounded">
+      <button className="!bg-transparent !border-[#FD919C] border-2 text-[#FD919C] px-10 py-2 rounded hover:scale-105 transition-transform">
         Quero ser paciente
       </button>
     </div>

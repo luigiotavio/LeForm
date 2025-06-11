@@ -25,7 +25,7 @@ function AccordionItem({ title, content }) {
 
 function Quemsomos() {
   return (
-    <div className='p-10'>
+    <div id="quemsomos" className='p-10'>
       <div className='flex flex-col md:flex-row gap-10'>
         <div className='md:w-1/2 flex justify-center items-center'>
           <img src={imagem}  alt="Avatar" className="w-full max-w-[500px] object-contain" />
