@@ -1,7 +1,7 @@
 from flask import Blueprint
 from controllers.cursoController import CursoController
 
-curso_bp = Blueprint('curso', __name__, url_prefix='/cursos')
+curso_bp = Blueprint('curso', __name__, url_prefix='/cursoslista')
 
 curso_bp.get('/')(CursoController.get_all)
 curso_bp.get('/<int:id>')(CursoController.get_by_id)

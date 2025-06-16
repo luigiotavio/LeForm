@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, Move } from 'lucide-react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('cursos');
+  const [activeTab, setActiveTab] = useState('cursoslista');
   const [searchTerm, setSearchTerm] = useState('');
   const [courses, setCourses] = useState([]);
   const [clinics, setClinics] = useState([]);
@@ -21,7 +21,7 @@ const AdminDashboard = () => {
       
       try {
         // Buscar cursos
-        const coursesResponse = await fetch('/cursos');
+        const coursesResponse = await fetch('/cursoslista');
         if (!coursesResponse.ok) throw new Error('Erro ao buscar cursos');
         const coursesData = await coursesResponse.json();
         
@@ -82,14 +82,14 @@ const AdminDashboard = () => {
       
       if (currentItem.id) {
         // Atualizar existente
-        response = await fetch(`/cursos/${currentItem.id}`, {
+        response = await fetch(`/cursoslista/${currentItem.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(backendFormat)
         });
       } else {
         // Criar novo
-        response = await fetch('/cursos', {
+        response = await fetch('/cursoslista', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(backendFormat)
@@ -99,7 +99,7 @@ const AdminDashboard = () => {
       if (!response.ok) throw new Error('Erro ao salvar curso');
       
       // Recarregar cursos após salvar
-      const coursesResponse = await fetch('/cursos');
+      const coursesResponse = await fetch('/cursoslista');
       const coursesData = await coursesResponse.json();
       const mappedCourses = coursesData.map(course => ({
         id: course.id,
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
 
   const handleDeleteCourse = async (id) => {
     try {
-      const response = await fetch(`/cursos/${id}`, {
+      const response = await fetch(`/cursoslista/${id}`, {
         method: 'DELETE'
       });
       
@@ -212,7 +212,7 @@ const AdminDashboard = () => {
   };
 
   const handleDelete = (id) => {
-    if (activeTab === 'cursos') {
+    if (activeTab === 'cursoslista') {
       handleDeleteCourse(id);
     } else {
       handleDeleteClinic(id);
@@ -220,7 +220,7 @@ const AdminDashboard = () => {
   };
 
   const handleSave = () => {
-    if (activeTab === 'cursos') {
+    if (activeTab === 'cursoslista') {
       handleSaveCourse();
     } else {
       handleSaveClinic();
@@ -228,7 +228,7 @@ const AdminDashboard = () => {
   };
 
   const handleAddNew = () => {
-    if (activeTab === 'cursos') {
+    if (activeTab === 'cursoslista') {
       setCurrentItem({
         title: '',
         doctor: '',
@@ -252,7 +252,7 @@ const AdminDashboard = () => {
 
   // Função para filtrar itens
   const getFilteredItems = () => {
-    if (activeTab === 'cursos') {
+    if (activeTab === 'cursoslista') {
       return courses.filter(course => 
         course.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         course.doctor?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -269,11 +269,11 @@ const AdminDashboard = () => {
   const handleDragEnd = (result) => {
     if (!result.destination) return;
     
-    const items = Array.from(activeTab === 'cursos' ? courses : clinics);
+    const items = Array.from(activeTab === 'cursoslista' ? courses : clinics);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     
-    if (activeTab === 'cursos') {
+    if (activeTab === 'cursoslista') {
       setCourses(items);
     } else {
       setClinics(items);
@@ -479,8 +479,8 @@ const AdminDashboard = () => {
         {/* Tabs para alternar entre cursos e clínicas */}
         <div className="flex mb-6 border-b border-gray-200">
           <button 
-            onClick={() => setActiveTab('cursos')}
-            className={`py-3 px-6 font-medium ${activeTab === 'cursos' 
+            onClick={() => setActiveTab('cursoslista')}
+            className={`py-3 px-6 font-medium ${activeTab === 'cursoslista' 
               ? 'text-[#FF879B] border-b-2 border-[#FF879B]' 
               : 'text-gray-500 hover:text-gray-700'}`}
           >
@@ -514,7 +514,7 @@ const AdminDashboard = () => {
             className="flex items-center gap-2 bg-[#FF879B] hover:bg-[#E5677F] text-white font-medium py-2 px-4 rounded-lg transition-colors"
           >
             <Plus size={18} />
-            {activeTab === 'cursos' ? 'Adicionar Curso' : 'Adicionar Clínica'}
+            {activeTab === 'cursoslista' ? 'Adicionar Curso' : 'Adicionar Clínica'}
           </button>
         </div>
 
@@ -556,7 +556,7 @@ const AdminDashboard = () => {
                                   <Move size={20} />
                                 </div>
                                 
-                                {activeTab === 'cursos' ? (
+                                {activeTab === 'cursoslista' ? (
                                   <div>
                                     <p className="font-medium text-[#1A1A1A]">{item.title}</p>
                                     <p className="text-sm text-gray-500">{item.doctor} • R$ {item.price} • {item.lessons} aulas</p>
@@ -606,7 +606,7 @@ const AdminDashboard = () => {
       {(isEditing || showAddModal) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="w-full max-w-2xl">
-            {activeTab === 'cursos' ? renderCourseForm() : renderClinicForm()}
+            {activeTab === 'cursoslista' ? renderCourseForm() : renderClinicForm()}
           </div>
         </div>
       )}
