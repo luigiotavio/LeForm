@@ -6,7 +6,7 @@ const LOGO_URL = '/leform_logo.svg';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -14,19 +14,22 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-    if (!username || !password) {
+    if (!name || !password) {
       setErrorMsg('Preencha usuário e senha.');
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/authentication', {
+      const response = await fetch('http://127.0.0.1:5000/adm/authentication', {
         method: 'POST',
         headers: {
           'Content-type':'application/json'
         },
-        body: JSON.stringify({username, password}),     
+        body: JSON.stringify({name, password}),     
       });
+      console.log('USER NAME:',name)
+      console.log('password:',password)
+      
       const isAuthenticated = await response.json();
       if (isAuthenticated === true){
         navigate('/admin')
@@ -65,7 +68,7 @@ const AdminLogin = () => {
           <input
             type="text"
             className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF879B]"
-            value={username}
+            value={name}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Digite seu usuário"
             required
