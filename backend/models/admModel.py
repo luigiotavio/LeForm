@@ -6,7 +6,7 @@ class Adm(Base):
     __tablename__ = 'adm'
 
     id = Column(Integer, primary_key=True)
-    user = Column("user", String, nullable=False, unique=True, key="username")
+    name = Column("name", String, nullable=False, unique=True, key="name")
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     
@@ -14,7 +14,7 @@ class Adm(Base):
     def to_dict(self):
         return {
             "id": self.id,
-            "user":self.user,
+            "name":self.name,
             "password":self.password,
             "created_at":self.created_at
         }

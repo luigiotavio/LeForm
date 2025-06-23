@@ -25,13 +25,17 @@ class AdmController():
       return f"Adm {id} deletada", 204
   
   def authentication():
-     data = request.json
-     user = data.get('user')
-     password = data.get('password')
-     authenticated = AdmService.authentication(user, password)
-     if authenticated:
-        return authenticated
-     return False
+    data = request.json
+    name = data.get('name')
+    password = data.get('password')
+
+    if not name or not password:
+        return jsonify({"error": "Usuário e senha obrigatórios"}), 400
+
+    authenticated = AdmService.authentication(name, password)
+    if authenticated:
+        return jsonify(True)
+    return jsonify(False)
 
      
 
