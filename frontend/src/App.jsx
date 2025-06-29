@@ -11,7 +11,7 @@ import "./App.css";
 function AppWrapper() {
   const location = useLocation();
 
-  const hideNavbarRoutes = ["/login", "/admin"];
+  const hideNavbarRoutes = ["/Login", "/admin", "/login"];
 
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
