@@ -1,23 +1,46 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const LOGO_URL = '/leform_logo.svg';
 
 const AdminLogin = () => {
-  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+  const [name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-    if (!username || !password) {
+    if (!name || !password) {
       setErrorMsg('Preencha usuário e senha.');
       return;
     }
-    setErrorMsg('');
-    alert('Login simulado! (adicione integração depois)');
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/adm/authentication', {
+        method: 'POST',
+        headers: {
+          'Content-type':'application/json'
+        },
+        body: JSON.stringify({name, password}),     
+      });
+      console.log('USER NAME:',name)
+      console.log('password:',password)
+      
+      const isAuthenticated = await response.json();
+      if (isAuthenticated === true){
+        navigate('/admin')
+      } else {
+        setErrorMsg('Usuário ou senha inválidos!.')
+      }
+
+    } catch(error){
+        console.error('Erro na autenticação:', error);
+        setErrorMsg('Erro no servidor. Tente novamente mais tarde.');
+    }
   };
 
   return (
@@ -45,7 +68,7 @@ const AdminLogin = () => {
           <input
             type="text"
             className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF879B]"
-            value={username}
+            value={name}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Digite seu usuário"
             required
@@ -75,7 +98,7 @@ const AdminLogin = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-[#FF879B] hover:bg-[#E5677F] text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md"
+          className="w-full bg-[#FF879B] hover:bg-[#E5677F] text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md cursor-pointer"
         >
           Entrar
         </button>

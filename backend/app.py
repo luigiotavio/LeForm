@@ -7,7 +7,7 @@ from db.database import Base, engine
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)  # Adicione esta linha
+    CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
     Base.metadata.create_all(bind=engine)
 
     app.register_blueprint(curso_bp)

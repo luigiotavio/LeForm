@@ -37,9 +37,9 @@ class AdmService():
           db.delete(adm)
           db.commit()
 
-  def authentication(user, password):
+  def authentication(name, password):
       with SessionLocal() as db:
-          adm = db.query(Adm).filter_by(user=user).first()
+          adm = db.query(Adm).filter_by(name=name).first()
           if adm and check_password_hash(adm.password, password):
               return True
           return None

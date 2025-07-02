@@ -10,9 +10,6 @@ function Home() {
   return (
     <div>
       <div className='pl-10'>
-        <Navbar></Navbar>
-      </div>
-      <div className='pl-10'>
         <Banner />
       </div>
       <div className='mt-80 sm:mt-30'>

@@ -1,4 +1,6 @@
 from flask import Blueprint
+from flask_cors import cross_origin
+from flask import request
 from controllers.admController import AdmController
 
 adm_bp = Blueprint('adm', __name__, url_prefix='/adm')
