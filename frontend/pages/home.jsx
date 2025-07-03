@@ -9,7 +9,7 @@ import Quemsomos from '../components/quemsomos';
 function Home() {
   return (
     <div>
-      <div className='pl-10'>
+      <div className='pl-10 pt-12'>
         <Banner />
       </div>
       <div className='mt-80 sm:mt-30'>
