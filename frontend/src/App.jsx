@@ -1,18 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import Home from "../pages/home";
+import Navbar from "../components/navbar";
+import Clinicas from "../pages/clinicas";
+import AdminLogin from "../pages/AdminLogin";
+import Cursos from "../pages/cursos";
+import AdminDashboard from "../pages/AdminDashboard";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+function AppWrapper() {
+  const location = useLocation();
+
+  const hideNavbarRoutes = ["/Login", "/admin", "/login"];
+
+  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
     <>
-      <h1 class="text-3xl font-bold underline text-red-500">
-          Projeto Leform!
-      </h1>
+      {shouldShowNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/clinicas" element={<Clinicas />} />
+        <Route path="/cursos" element={<Cursos />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
+  );
+}
+
+export default App;

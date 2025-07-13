@@ -1,24 +1,48 @@
-from supabase import create_client, Client
-import os
-from models.admModel import Admin
+from models.admModel import Adm
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+from db.database import SessionLocal
 
-SUPABASE_URL = " "
-SUPABASE_KEY = " "
+class AdmService():
+  def update_adm(adm_id, data):
+    with SessionLocal() as db:
+        adm = db.query(Adm).get(adm_id)
+        for key, value in data.items():
+            setattr(adm, key, value)
+        db.commit()
+        db.refresh(adm) 
+        return adm.to_dict()  
+    
+  def get_all_adm():
+      with SessionLocal() as db:
+          return db.query(Adm).all()
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+  def get_adm_by_id(adm_id):
+      with SessionLocal() as db:
+          return db.query(Adm).get(adm_id)
 
-class AdminService:
-    @staticmethod
-    def get_all_admins():
-        response = supabase.table("admins").select("*").execute()
-        return response.data
+  def create_adm(data):
+      hashed_password = generate_password_hash(data['password'])
+      data['password'] = hashed_password
+      with SessionLocal() as db:
+          novo = Adm(**data)
+          db.add(novo)
+          db.commit()
+          db.refresh(novo)
+          return novo
 
-    @staticmethod
-    def get_admin_by_id(admin_id: int) -> dict | None:
-        response = supabase.table("admins").select("*").eq("id", admin_id).single().execute()
-        return response.data
+  def delete_adm(adm_id):
+      with SessionLocal() as db:
+          adm = db.query(Adm).get(adm_id)
+          db.delete(adm)
+          db.commit()
 
-    @staticmethod
-    def create_admin(admin_data: dict) -> list[dict]:
-        response = supabase.table("admins").insert(admin_data).execute()
-        return response.data
+  def authentication(name, password):
+      with SessionLocal() as db:
+          adm = db.query(Adm).filter_by(name=name).first()
+          if adm and check_password_hash(adm.password, password):
+              return True
+          return None
+      
+    
+
