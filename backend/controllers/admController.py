@@ -1,21 +1,41 @@
-from flask import Blueprint, request, jsonify
-from services.admService import AdminService
+from flask import request, jsonify
+from services.admService import AdmService
 
-admin_bp = Blueprint("admin", __name__)
+class AdmController():    
+  def get_all():
+      adms = AdmService.get_all_adm()
+      return jsonify([adm.to_dict() for adm in adms])
 
-@admin_bp.route("/admins", methods=["GET"])
-def get_admins():
-    return jsonify(AdminService.get_all_admins())
+  def get_by_id(id):
+      adm = AdmService.get_adm_by_id(id)
+      return jsonify(adm.to_dict()) if adm else ('', 404)
 
-@admin_bp.route("/admin/<int:admin_id>", methods=["GET"])
-def get_admin(admin_id):
-    admin = AdminService.get_admin_by_id(admin_id)
-    if admin:
-        return jsonify(admin)
-    return jsonify({"message": "Admin not found"}), 404
-
-@admin_bp.route("/admin", methods=["POST"])
-def create_admin():
+  def create():
+      data = request.json
+      novo = AdmService.create_adm(data)
+      return jsonify(novo.to_dict()), 201
+  
+  def update(id):
     data = request.json
-    new_admin = AdminService.create_admin(data)
-    return jsonify(new_admin), 201
+    atualizado = AdmService.update_adm(id, data)
+    return jsonify(atualizado)
+
+  def delete(id):
+      AdmService.delete_adm(id)
+      return f"Adm {id} deletada", 204
+  
+  def authentication():
+    data = request.json
+    name = data.get('name')
+    password = data.get('password')
+
+    if not name or not password:
+        return jsonify({"error": "Usuário e senha obrigatórios"}), 400
+
+    authenticated = AdmService.authentication(name, password)
+    if authenticated:
+        return jsonify(True)
+    return jsonify(False)
+
+     
+
