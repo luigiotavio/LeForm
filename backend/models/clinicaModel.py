@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, JSON
 from db.database import Base
 
 class Clinica(Base):
@@ -10,6 +10,8 @@ class Clinica(Base):
     endereco = Column(String)
     url_imagem = Column(String)
     link_whatsapp = Column(String)
+    ler_mais = Column(String)
+    medicos = Column(JSON)
 
     def to_dict(self):
         return {
@@ -18,5 +20,7 @@ class Clinica(Base):
             "especialidade":self.especialidade,
             "endereco":self.endereco,
             "url_imagem":self.url_imagem,
-            "link_whatsapp":self.link_whatsapp
+            "link_whatsapp":self.link_whatsapp,
+            "ler_mais":self.ler_mais,
+            "medicos":self.medicos
         }
