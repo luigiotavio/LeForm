@@ -4,6 +4,7 @@ from routes.cursoRoutes import curso_bp
 from routes.clinicasRoutes import clinica_bp
 from routes.admRoutes import adm_bp
 from db.database import Base, engine
+import os
 
 def create_app():
     app = Flask(__name__)
@@ -19,4 +20,5 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
