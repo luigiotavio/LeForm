@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Search, Plus, Edit2, Trash2, Move, LogOut } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { useLocation, Navigate } from 'react-router-dom';
 
 const CLOUD_NAME = "ddhxypadw";
 const UPLOAD_PRESET = "leform";
@@ -96,8 +97,8 @@ function AdminDashboard() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch('https://leform.onrender.com/cursoslista').then(r => r.json()),
-      fetch('https://leform.onrender.com/clinicas').then(r => r.json())
+      fetch('https://leform.onrender.com/cursoslista/').then(r => r.json()),
+      fetch('https://leform.onrender.com/clinicas/').then(r => r.json())
     ])
       .then(([coursesData, clinicsData]) => {
         setCourses(coursesData.map(course => ({
@@ -311,6 +312,15 @@ function AdminDashboard() {
     localStorage.removeItem('admin_token');
     window.location.reload();
   };
+
+  //Lógica para bloquear acesso direto na ROTA:
+  const location = useLocation();
+  // Verifica se veio da tela de login com autenticação
+  const authenticated = location.state?.authenticated;
+
+  if (!authenticated) {
+    return <Navigate to="/Login" />; // Bloqueia acesso direto
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 relative">

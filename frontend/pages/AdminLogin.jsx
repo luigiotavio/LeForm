@@ -27,12 +27,10 @@ const AdminLogin = () => {
         },
         body: JSON.stringify({name, password}),     
       });
-      console.log('USER NAME:',name)
-      console.log('password:',password)
       
       const isAuthenticated = await response.json();
       if (isAuthenticated === true){
-        navigate('/admin')
+        navigate('/admin', {state: {authenticated: true}});
       } else {
         setErrorMsg('Usuário ou senha inválidos!.')
       }
