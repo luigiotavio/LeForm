@@ -38,7 +38,7 @@ const AdminDashboard = () => {
 
       try {
         // Buscar cursos
-        const coursesResponse = await fetch('/cursoslista');
+        const coursesResponse = await fetch('https://leform.onrender.com/cursoslista/');
         if (!coursesResponse.ok) throw new Error('Erro ao buscar cursos');
         const coursesData = await coursesResponse.json();
 
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
         setCourses(mappedCourses);
 
         // Buscar clínicas
-        const clinicsResponse = await fetch('/clinicas');
+        const clinicsResponse = await fetch('https://leform.onrender.com/cursoslista/');
         if (!clinicsResponse.ok) throw new Error('Erro ao buscar clínicas');
         const clinicsData = await clinicsResponse.json();
 
@@ -99,14 +99,14 @@ const AdminDashboard = () => {
 
       if (currentItem.id) {
         // Atualizar existente
-        response = await fetch(`/cursoslista/${currentItem.id}`, {
+        response = await fetch(`https://leform.onrender.com/cursoslista/${currentItem.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(backendFormat)
         });
       } else {
         // Criar novo
-        response = await fetch('/cursoslista', {
+        response = await fetch('https://leform.onrender.com/cursoslista/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(backendFormat)
@@ -116,7 +116,7 @@ const AdminDashboard = () => {
       if (!response.ok) throw new Error('Erro ao salvar curso');
 
       // Recarregar cursos após salvar
-      const coursesResponse = await fetch('/cursoslista');
+      const coursesResponse = await fetch('https://leform.onrender.com/cursoslista/');
       const coursesData = await coursesResponse.json();
       const mappedCourses = coursesData.map(course => ({
         id: course.id,
@@ -141,7 +141,7 @@ const AdminDashboard = () => {
 
   const handleDeleteCourse = async (id) => {
     try {
-      const response = await fetch(`/cursoslista/${id}`, {
+      const response = await fetch(`https://leform.onrender.com/cursoslista/${id}`, {
         method: 'DELETE'
       });
 
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
 
       if (currentItem.id) {
         // Atualizar existente
-        response = await fetch(`/clinicas/${currentItem.id}`, {
+        response = await fetch(`https://leform.onrender.com/clinicas/${currentItem.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(backendFormat)
@@ -186,7 +186,7 @@ const AdminDashboard = () => {
       if (!response.ok) throw new Error('Erro ao salvar clínica');
 
       // Recarregar clínicas após salvar
-      const clinicsResponse = await fetch('/clinicas');
+      const clinicsResponse = await fetch('https://leform.onrender.com/clinicas/');
       const clinicsData = await clinicsResponse.json();
       const mappedClinics = clinicsData.map(clinic => ({
         id: clinic.id,
@@ -209,7 +209,7 @@ const AdminDashboard = () => {
 
   const handleDeleteClinic = async (id) => {
     try {
-      const response = await fetch(`/clinicas/${id}`, {
+      const response = await fetch(`https://leform.onrender.com/clinicas/${id}`, {
         method: 'DELETE'
       });
 
