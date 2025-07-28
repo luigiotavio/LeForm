@@ -97,8 +97,8 @@ function AdminDashboard() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch('https://leform.onrender.com/cursoslista').then(r => r.json()),
-      fetch('https://leform.onrender.com/clinicas').then(r => r.json())
+      fetch('https://leform.onrender.com/cursoslista/').then(r => r.json()),
+      fetch('https://leform.onrender.com/clinicas/').then(r => r.json())
     ])
       .then(([coursesData, clinicsData]) => {
         setCourses(coursesData.map(course => ({
