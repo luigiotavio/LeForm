@@ -9,7 +9,7 @@ import os
 def create_app():
     app = Flask(__name__)
     # Definir CORS para permitir apenas o localhost na origem
-    CORS(app, resources={r"/*": {"origins": "*"}})
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     Base.metadata.create_all(bind=engine)
     app.register_blueprint(curso_bp)
