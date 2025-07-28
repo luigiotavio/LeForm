@@ -9,18 +9,9 @@ import os
 def create_app():
     app = Flask(__name__)
     # Definir CORS para permitir apenas o localhost na origem
-    CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
-
-    @app.after_request
-    def after_request(response):
-        # Garantir que os cabeçalhos CORS sejam enviados em todas as respostas
-        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, DELETE, PUT, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        return response
+    CORS(app, resources={r"/*": {"origins": ["http://localhost:5173"]}}, supports_credentials=True)
 
     Base.metadata.create_all(bind=engine)
-
     app.register_blueprint(curso_bp)
     app.register_blueprint(adm_bp)
     app.register_blueprint(clinica_bp)

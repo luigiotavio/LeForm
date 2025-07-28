@@ -19,7 +19,7 @@ const Cursos = () => {
   // Buscar cursos do backend
   useEffect(() => {
     setLoading(true);
-    fetch('/cursoslista')
+    fetch('https://leform.onrender.com/cursoslista/')
       .then(res => {
         if (!res.ok) throw new Error('Erro ao buscar cursos');
         return res.json();

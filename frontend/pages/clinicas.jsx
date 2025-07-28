@@ -19,7 +19,7 @@ const Clinicas = () => {
   // Buscar clínicas do backend
   useEffect(() => {
     setLoading(true);
-    fetch('/clinicas')
+    fetch('https://leform.onrender.com/clinicas/')
       .then(res => {
         if (!res.ok) throw new Error('Erro ao buscar clínicas');
         return res.json();
