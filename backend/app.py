@@ -4,11 +4,16 @@ from routes.cursoRoutes import curso_bp
 from routes.clinicasRoutes import clinica_bp
 from routes.admRoutes import adm_bp
 from db.database import Base, engine
+from werkzeug.middleware.proxy_fix import ProxyFix
 import os
 
 def create_app():
     app = Flask(__name__)
-    # Definir CORS para permitir apenas o localhost na origem
+
+    # CORRIGE o scheme, host, etc
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+    # Agora o CORS pode responder corretamente
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     Base.metadata.create_all(bind=engine)
