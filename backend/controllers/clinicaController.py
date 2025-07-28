@@ -23,3 +23,7 @@ class ClinicaController():
   def delete(id):
       ClinicaService.delete_clinica(id)
       return f"Clínica {id} deletada", 204
+  
+#   def get_filtros():
+#      filtros = ClinicaService.get_filtros()
+#      return jsonify(filtros)

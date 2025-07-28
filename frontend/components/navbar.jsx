@@ -11,8 +11,8 @@ function Navbar() {
   const isEmpresas = pathname === '/Cursos'; 
 
   return (
-    <nav className="fixed top-0 w-full bg-white flex items-center justify-between py-10 z-50 shadow-sm">
-      <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded-full px-4 py-2 shadow-md">
+    <nav className="fixed top-0 w-full bg-white flex items-center justify-between py-4 z-50 shadow-sm">
+      <div className="hidden md:flex bg-white border border-gray-300 rounded-full px-4 py-2 shadow-md gap-x-4 mx-auto justify-center">
         {isClinicasPage ? (
           <>
           <a href="/#" onClick={() => setActiveLink('Home')} className={`px-6 py-1 font-semibold rounded-full transition-all duration-300 
@@ -22,6 +22,10 @@ function Navbar() {
         <a href="/Clinicas" onClick={() => setActiveLink('Clinicas')} className={`px-6 py-1 font-semibold rounded-full transition-all duration-300 
               ${activeLink === 'Clinicas' ? 'bg-[#FD919C] text-white scale-110' : '!text-black hover:!text-[#FD919C] hover:scale-110'}
             `}>Clinicas</a>
+
+        <a href="/Cursos" onClick={() => setActiveLink('Curso')} className={`px-6 py-1 font-semibold rounded-full transition-all duration-300 
+              ${activeLink === 'Curso' ? 'bg-[#FD919C] text-white scale-110' : '!text-black hover:!text-[#FD919C] hover:scale-110'}
+            `}>Para empresas</a>
           </>
         ) : isEmpresas ? (
           <>
@@ -29,9 +33,13 @@ function Navbar() {
               ${activeLink === 'Home' ? 'bg-[#FD919C] text-white scale-110' : '!text-black hover:!text-[#FD919C] hover:scale-110'}
             `}>Home</a>
 
+        <a href="/Clinicas" onClick={() => setActiveLink('Curso')} className={`px-6 py-1 font-semibold rounded-full transition-all duration-300 
+              ${activeLink === 'Clinicas' ? 'bg-[#FD919C] text-white scale-110' : '!text-black hover:!text-[#FD919C] hover:scale-110'}
+            `}>Clinicas</a>
+
         <a href="/Cursos" onClick={() => setActiveLink('Curso')} className={`px-6 py-1 font-semibold rounded-full transition-all duration-300 
               ${activeLink === 'Curso' ? 'bg-[#FD919C] text-white scale-110' : '!text-black hover:!text-[#FD919C] hover:scale-110'}
-            `}>Cursos</a>
+            `}>Para empresas</a>
           </>
         ) : (
           <>
@@ -76,11 +84,13 @@ function Navbar() {
           <>
             <a href="/" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-pink-500 font-semibold bg-pink-100 rounded-lg w-full text-center">Home</a>
             <a href="/Clinicas" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Clínicas</a>
+            <a href="/Cursos" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Para empresas</a>
           </>
         ) : isEmpresas ? (
           <>
             <a href="/" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-pink-500 font-semibold bg-pink-100 rounded-lg w-full text-center">Home</a>
             <a href="/Cursos" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Para empresas</a>
+            <a href="/Clinicas" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-gray-600 hover:text-pink-500">Clínicas</a>
           </>
         ) : (
           <>

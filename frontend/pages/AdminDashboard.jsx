@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Search, Plus, Edit2, Trash2, Move, LogOut } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { useLocation, Navigate } from 'react-router-dom';
 
 const CLOUD_NAME = "ddhxypadw";
 const UPLOAD_PRESET = "leform";
@@ -96,8 +97,8 @@ function AdminDashboard() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch('/cursoslista').then(r => r.json()),
-      fetch('/clinicas').then(r => r.json())
+      fetch('https://leform.onrender.com/cursoslista/').then(r => r.json()),
+      fetch('https://leform.onrender.com/clinicas/').then(r => r.json())
     ])
       .then(([coursesData, clinicsData]) => {
         setCourses(coursesData.map(course => ({
@@ -109,6 +110,7 @@ function AdminDashboard() {
           specialization: course.especializacao,
           link: course.link,
           imageUrl: course.url_imagem,
+          ler_mais: course.ler_mais
         })));
         setClinics(clinicsData.map(clinic => ({
           id: clinic.id,
@@ -116,7 +118,8 @@ function AdminDashboard() {
           specialty: clinic.especialidade,
           address: clinic.endereco,
           imageUrl: clinic.url_imagem,
-          whatsappLink: clinic.link_whatsapp
+          whatsappLink: clinic.link_whatsapp,
+          ler_mais: clinic.ler_mais
         })));
         setError(null);
       })
@@ -138,12 +141,12 @@ function AdminDashboard() {
       };
       let response;
       if (currentItem.id) {
-        response = await fetch(`/cursoslista/${currentItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
+        response = await fetch(`https://leform.onrender.com/cursoslista/${currentItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
       } else {
-        response = await fetch('/cursoslista', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
+        response = await fetch('https://leform.onrender.com/cursoslista', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
       }
       if (!response.ok) throw new Error();
-      const data = await fetch('/cursoslista').then(r => r.json());
+      const data = await fetch('https://leform.onrender.com/cursoslista').then(r => r.json());
       setCourses(data.map(course => ({
         id: course.id, title: course.nome, doctor: course.doutor, price: course.preco ? course.preco.toString() : '0',
         lessons: parseInt(course.atividades) || 0, specialization: course.especializacao, link: course.link, imageUrl: course.url_imagem,
@@ -164,12 +167,12 @@ function AdminDashboard() {
       };
       let response;
       if (currentItem.id) {
-        response = await fetch(`/clinicas/${currentItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
+        response = await fetch(`https://leform.onrender.com/clinicas/${currentItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
       } else {
-        response = await fetch('/clinicas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
+        response = await fetch('https://leform.onrender.com/clinicas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(backendFormat) });
       }
       if (!response.ok) throw new Error();
-      const data = await fetch('/clinicas').then(r => r.json());
+      const data = await fetch('https://leform.onrender.com/clinicas').then(r => r.json());
       setClinics(data.map(clinic => ({
         id: clinic.id, name: clinic.nome, specialty: clinic.especialidade, address: clinic.endereco, imageUrl: clinic.url_imagem, whatsappLink: clinic.link_whatsapp
       })));
@@ -181,14 +184,14 @@ function AdminDashboard() {
 
   const handleDeleteCourse = async (id) => {
     try {
-      const response = await fetch(`/cursoslista/${id}`, { method: 'DELETE' });
+      const response = await fetch(`https://leform.onrender.com/cursoslista/${id}`, { method: 'DELETE' });
       if (!response.ok) throw new Error();
       setCourses(courses.filter(c => c.id !== id));
     } catch { alert('Erro ao deletar curso'); }
   };
   const handleDeleteClinic = async (id) => {
     try {
-      const response = await fetch(`/clinicas/${id}`, { method: 'DELETE' });
+      const response = await fetch(`https://leform.onrender.com/clinicas/${id}`, { method: 'DELETE' });
       if (!response.ok) throw new Error();
       setClinics(clinics.filter(c => c.id !== id));
     } catch { alert('Erro ao deletar clínica'); }
@@ -309,6 +312,15 @@ function AdminDashboard() {
     localStorage.removeItem('admin_token');
     window.location.reload();
   };
+
+  //Lógica para bloquear acesso direto na ROTA:
+  const location = useLocation();
+  // Verifica se veio da tela de login com autenticação
+  const authenticated = location.state?.authenticated;
+
+  if (!authenticated) {
+    return <Navigate to="/Login" />; // Bloqueia acesso direto
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 relative">

@@ -9,9 +9,10 @@ class Curso(Base):
     doutor = Column(String, nullable=False)
     preco = Column(Float)
     atividades = Column(String)
-    especializacao = Column(String)
+    especializacao = Column(String, nullable=False)
     link = Column(String)
     url_imagem = Column(String)
+    ler_mais = Column(String, nullable=False)
 
     def to_dict(self):
         return {
@@ -20,6 +21,8 @@ class Curso(Base):
             "doutor":self.doutor,
             "preco":self.preco,
             "atividades":self.atividades,
+            "especializacao":self.especializacao,
             "link":self.link,
-            "url_imagem":self.url_imagem
+            "url_imagem":self.url_imagem,
+            "ler_mais":self.ler_mais
         }
