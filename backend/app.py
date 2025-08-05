@@ -6,9 +6,13 @@ from routes.clinicasRoutes import clinica_bp
 from routes.admRoutes import adm_bp
 from db.database import Base, engine
 import os
+from flask_apscheduler import APScheduler
+from services.cursoService import CursoService
+
 
 def create_app():
     app = Flask(__name__)
+    scheduler = APScheduler()
 
     # Middleware satânico do ProxyFix
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
@@ -28,7 +32,14 @@ def create_app():
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
+    
+    @scheduler.task('interval', id='job_fetch', minutes=5)
+    def job():
+        CursoService.get_all_cursos()
 
+    scheduler.init_app(app)
+    scheduler.start()
+    
     return app
 
 
