@@ -10,12 +10,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/clinicas': {
-        target: 'http://localhost:5000',
+        target: 'https://leform.onrender.com',
         changeOrigin: true,
         secure: false
       },
       '/cursos': {
-        target: 'http://localhost:5000',
+        target: 'https://leform.onrender.com',
         changeOrigin: true,
         secure: false
       }
