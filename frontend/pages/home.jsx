@@ -1,6 +1,6 @@
 import React from 'react';
 import Footer from '../components/Footer';
-import Banner from '../components/Banner';
+import Banner from '../components/banner';
 import Service from '../components/Services';
 import Publicoalvo from '../components/publicoAlvo';
 import Navbar from '../components/navbar';
