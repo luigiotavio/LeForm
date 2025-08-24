@@ -42,6 +42,7 @@ const Cursos = () => {
     const url = 'http://localhost:5000/cursoslista/'; //alterar
 
     fetch(url)
+
       .then(res => {
         if (!res.ok) throw new Error('Erro ao buscar cursos');
         return res.json();

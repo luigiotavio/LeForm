@@ -31,6 +31,7 @@ const AdminLogin = () => {
       const isAuthenticated = await response.json();
       if (isAuthenticated === true){
         navigate('/admin', {state: {authenticated: true}});
+
       } else {
         setErrorMsg('Usuário ou senha inválidos!.')
       }
