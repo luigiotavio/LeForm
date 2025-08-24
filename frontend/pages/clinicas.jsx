@@ -10,13 +10,19 @@ const Clinicas = () => {
   const [filteredClinics, setFilteredClinics] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     location: [],
-    services: [],
-    categories: []
+    specialties: []
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Buscar clínicas do backend
+  // Para filtros dinâmicos
+  const [locationOptions, setLocationOptions] = useState([]);
+  const [showAllLocations, setShowAllLocations] = useState(false);
+
+  const [specialtyOptions, setSpecialtyOptions] = useState([]);
+  const [showAllSpecialties, setShowAllSpecialties] = useState(false);
+
+  // Buscar dados do backend
   useEffect(() => {
     setLoading(true);
     fetch('https://leform.onrender.com/clinicas/')
@@ -31,40 +37,73 @@ const Clinicas = () => {
           specialty: clinic.especialidade,
           address: clinic.endereco,
           imageUrl: clinic.url_imagem,
-          whatsappLink: clinic.link_whatsapp
+          whatsappLink: clinic.link_whatsapp,
+          lerMais: clinic.ler_mais,
+          medicos: clinic.medicos
         }));
         setClinics(mapped);
         setFilteredClinics(mapped);
         setError(null);
+
+        // Opções de Localização
+        const locationCount = {};
+        mapped.forEach(clinic => {
+          const loc = clinic.address;
+          locationCount[loc] = (locationCount[loc] || 0) + 1;
+        });
+        const locationsArray = Object.entries(locationCount)
+          .map(([location, count]) => ({ location, count }))
+          .sort((a, b) => b.count - a.count);
+        setLocationOptions(locationsArray);
+
+        // Opções de Especialidade — SPLIT inteligente
+        const specialtyCount = {};
+        mapped.forEach(clinic => {
+          if (clinic.specialty) {
+            // Divide por ‘,’, ‘ e ’, ‘/’, ‘;’ e remove espaços extras
+            clinic.specialty
+              .split(/,| e |\/|;/i)
+              .map(s => s.trim())
+              .filter(Boolean)
+              .forEach(spec => {
+                specialtyCount[spec] = (specialtyCount[spec] || 0) + 1;
+              });
+          }
+        });
+        const specialtiesArray = Object.entries(specialtyCount)
+          .map(([specialty, count]) => ({ specialty, count }))
+          .sort((a, b) => b.count - a.count);
+        setSpecialtyOptions(specialtiesArray);
       })
       .catch(() => setError('Erro ao carregar clínicas.'))
       .finally(() => setLoading(false));
   }, []);
 
-  // Filtragem
+  // Filtragem responsiva
   useEffect(() => {
     let result = [...clinics];
     if (searchTerm) {
       result = result.filter(clinic =>
         clinic.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        clinic.specialty.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        clinic.address.toLowerCase().includes(searchTerm.toLowerCase())
+        (clinic.specialty || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (clinic.address || '').toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     if (selectedFilters.location.length > 0) {
       result = result.filter(clinic =>
-        selectedFilters.location.some(location => clinic.address.includes(location))
+        selectedFilters.location.some(location => clinic.address === location)
       );
     }
-    if (selectedFilters.services.length > 0) {
-      result = result.filter(clinic =>
-        selectedFilters.services.some(service => clinic.specialty.includes(service))
-      );
-    }
-    if (selectedFilters.categories.length > 0) {
-      result = result.filter(clinic =>
-        selectedFilters.categories.some(category => clinic.specialty.includes(category))
-      );
+    if (selectedFilters.specialties.length > 0) {
+      result = result.filter(clinic => {
+        // Divide as especialidades, normalizando igual ao options
+        const clinicSpecs = clinic.specialty
+          ? clinic.specialty.split(/,| e |\/|;/i).map(s => s.trim()).filter(Boolean)
+          : [];
+        return selectedFilters.specialties.some(
+          spec => clinicSpecs.includes(spec)
+        );
+      });
     }
     setFilteredClinics(result);
   }, [searchTerm, selectedFilters, clinics]);
@@ -72,8 +111,7 @@ const Clinicas = () => {
   const clearFilters = () => {
     setSelectedFilters({
       location: [],
-      services: [],
-      categories: []
+      specialties: []
     });
     setSearchTerm('');
   };
@@ -91,7 +129,7 @@ const Clinicas = () => {
               placeholder="Pesquise pelo nome, especialidade..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF879B] focus:border-transparent"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           </div>
@@ -108,16 +146,31 @@ const Clinicas = () => {
             <ClinicFilters
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
+              locationOptions={showAllLocations ? locationOptions : locationOptions.slice(0, 5)}
+              specialtyOptions={showAllSpecialties ? specialtyOptions : specialtyOptions.slice(0, 5)}
             />
+            {locationOptions.length > 5 && (
+              <button
+                className="text-[#FF879B] text-sm font-medium mt-2"
+                onClick={() => setShowAllLocations(!showAllLocations)}
+              >
+                {showAllLocations ? 'Ver menos' : `Ver mais (${locationOptions.length - 5})`}
+              </button>
+            )}
+            {specialtyOptions.length > 5 && (
+              <button
+                className="text-[#FF879B] text-sm font-medium mt-2 ml-4"
+                onClick={() => setShowAllSpecialties(!showAllSpecialties)}
+              >
+                {showAllSpecialties ? 'Ver menos' : `Ver mais especialidades (${specialtyOptions.length - 5})`}
+              </button>
+            )}
           </div>
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <p className="text-gray-600">{filteredClinics.length} clínicas encontradas</p>
-              {(selectedFilters.location.length > 0 || selectedFilters.services.length > 0 || selectedFilters.categories.length > 0 || searchTerm) && (
-                <button
-                  onClick={clearFilters}
-                  className="text-[#FF879B] text-sm font-medium"
-                >
+              {(selectedFilters.location.length > 0 || selectedFilters.specialties.length > 0 || searchTerm) && (
+                <button onClick={clearFilters} className="text-[#FF879B] text-sm font-medium">
                   Limpar filtros
                 </button>
               )}
@@ -128,7 +181,7 @@ const Clinicas = () => {
               <div className="text-center py-10 text-red-500">{error}</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredClinics.map((clinic) => (
+                {filteredClinics.map(clinic => (
                   <ClinicCard
                     key={clinic.id}
                     name={clinic.name}
@@ -136,6 +189,8 @@ const Clinicas = () => {
                     address={clinic.address}
                     imageUrl={clinic.imageUrl}
                     whatsappLink={clinic.whatsappLink}
+                    lerMais={clinic.lerMais}
+                    medicos={clinic.medicos}
                   />
                 ))}
               </div>

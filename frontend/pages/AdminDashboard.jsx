@@ -317,7 +317,9 @@ function AdminDashboard() {
   const location = useLocation();
   // Verifica se veio da tela de login com autenticação
   const authenticated = location.state?.authenticated;
+
   console.log(authenticated)
+
 
   if (!authenticated) {
     return <Navigate to="/Login" />; // Bloqueia acesso direto
